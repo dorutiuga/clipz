@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ClipComponent } from './clip/clip.component';
-import {NotFoundComponent} from "./not-found/not-found.component";
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ClipService } from './services/clip.service';
 
 const routes: Routes = [
   {
@@ -14,14 +15,21 @@ const routes: Routes = [
     path: 'about',
     component: AboutComponent,
   },
-  { path: 'clip/:id',
-    component: ClipComponent
-  },
-
   {
-    path:"**",
-    component:NotFoundComponent
-  }
+    path: 'clip/:id',
+    component: ClipComponent,
+    resolve: {
+      clip: ClipService,
+    },
+  },
+  {
+    path: '',
+    loadChildren: async ()=> (await import('./video/video.module')).VideoModule
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
